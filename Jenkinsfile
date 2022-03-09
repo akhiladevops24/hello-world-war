@@ -3,6 +3,9 @@ pipeline {
     triggers {
         cron('H * * * 1-5')
     }
+    parameters {
+        string(name: 'MAVENGOAL', defaultValue: 'clean package', description: 'Enter your maven goal')
+    }
     stages {
         stage('SCM') {
             steps {
@@ -11,7 +14,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                sh script: "mvn ${params.MAVENGOAL}"
             }
         }
         stage('postbuild') {
